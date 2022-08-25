@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  api:
+    restart: always
+    build: .
+    ports:
+      - "8091:8080"
+    volumes:
+      - ./:/api
+    environment:
+      DEBUG: "true"
+    # env_file:
+    #   - .env
+    command: sh -c "flask --app main run --reload --host 0.0.0.0 --port 8080"
