@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Union
 
 from google.api_core.exceptions import NotFound
 from google.cloud import storage
@@ -11,7 +12,7 @@ CREDENTIALS_JSON = os.path.join(
 )
 
 
-def upload_to_bucket(contents: str, blob_name) -> str:
+def upload_to_bucket(contents: Union[bytes, str], blob_name) -> bool:
     # Creating storage client from the credentials.
     storage_client = storage.Client.from_service_account_json(CREDENTIALS_JSON)
     try:
@@ -22,7 +23,7 @@ def upload_to_bucket(contents: str, blob_name) -> str:
         bucket = storage_client.create_bucket(BUCKET_NAME)
     blob = bucket.blob(blob_name)
     blob.upload_from_string(contents)
-    return blob.public_url
+    return bool(blob.public_url)
 
 
 def get_from_bucket(blob_name) -> dict:

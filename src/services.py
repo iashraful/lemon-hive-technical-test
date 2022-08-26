@@ -19,10 +19,10 @@ class ConfigurationFileService:
             # Making the in memory file
             m_file = io.StringIO(json.dumps(schema.dict()))
             # Passing the file contents to the bucket upload function
-            public_url: str = upload_to_bucket(
+            uploaded: bool = upload_to_bucket(
                 contents=m_file.read(), blob_name="configuration-file.json"
             )
-            if public_url:
+            if uploaded:
                 return JSONResponse(
                     data={
                         "message": "Configuration file uploaded successfully.",
